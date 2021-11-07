@@ -26,7 +26,7 @@ void		c3_terminate(t_c3_state *stat);
 
 void		c3_draw(t_c3_state *stat);
 void		c3_render_scene(t_c3_state *stat);
-char		c3_query_map(t_c3_state *stat, int x, int y);
+int			c3_query_map(t_c3_state *stat, int x, int y);
 void		c3_draw_map(t_c3_state *stat);
 void		c3_draw_rays_on_map(t_c3_state *stat);
 void		c3_scan(t_c3_state *stat);
@@ -44,7 +44,6 @@ int			c3_key_press_hook(int key, void *param);
 int			c3_key_release_hook(int key, void *param);
 
 void		c3_map_init(t_c3_map *map, t_c3_scene *scene);
-char		c3_query_map(t_c3_state *stat, int x, int y);
 void		c3_check_map_closed(t_c3_state *stat, int x, int y);
 void		c3_check_map_closed_iter(t_c3_state *stat, int x, int y);
 

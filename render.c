@@ -49,13 +49,13 @@ void			c3_render_scene(t_c3_state *stat)
 	unsigned int	col;
 	int				wall_height;
 
-	x = 100;
-	while (x < 110)
+	x = 0;
+	while (x < ((t_c3_scene*)stat->scene)->map_width)
 	{
-		y = 100;
-		while (y < 110)
+		y = 0;
+		while (y < ((t_c3_scene*)stat->scene)->map_height)
 		{
-			col = 0x00ffffff;
+			col = c3_query_map(stat, x, y);
 			c3_render_fill_pixel(stat, x, y, col);
 			y++;
 		}

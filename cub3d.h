@@ -95,9 +95,9 @@ typedef struct	s_c3_sprite
 
 typedef struct	s_c3_map
 {
-	char		*map;
-	int			width;
-	int			height;
+	int		**map;
+	int		width;
+	int		height;
 }				t_c3_map;
 
 # define C3_MAP_SYMBOL_EMPTY 0

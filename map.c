@@ -25,32 +25,34 @@ void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 	map->width = scene->map_width;
 	map->height = scene->map_height;
 	i = 0;
-	while (i < map->width * map->height)
-	{
-		ch = map->map[i];
-		if (ch != ' ' && ch != '0' && ch != '1' && ch != '2' &&
-			ch != 'N' && ch != 'E' && ch != 'S' && ch != 'W')
-		{
-			C3_LOG("Error\nInvalid map.\n");
-			c3_scene_cleanup(scene);
-			exit(1);
-		}
-		i++;
-	}
+	/* while (i < map->width * map->height) */
+	/* { */
+	/* 	ch = map->map[i]; */
+	/* 	if (ch != ' ' && ch != '0' && ch != '1' && ch != '2' && */
+	/* 		ch != 'N' && ch != 'E' && ch != 'S' && ch != 'W') */
+	/* 	{ */
+	/* 		C3_LOG("Error\nInvalid map.\n"); */
+	/* 		c3_scene_cleanup(scene); */
+	/* 		exit(1); */
+	/* 	} */
+	/* 	i++; */
+	/* } */
 }
 
-char	c3_query_map(t_c3_state *stat, int x, int y)
+int		c3_query_map(t_c3_state *stat, int x, int y)
 {
-	char ch;
+	int val;
 
-	ch = stat->map.map[y * stat->map.width + x];
-	if (ch == '1')
-		return (1);
-	else if (ch == '0')
-		return (0);
-	else if (ch == '2')
-		return (2);
-	return (0);
+	/* ch = stat->map.map[y * stat->map.width + x]; */
+	/* if (ch == '1') */
+	/* 	return (1); */
+	/* else if (ch == '0') */
+	/* 	return (0); */
+	/* else if (ch == '2') */
+	/* 	return (2); */
+	/* return (0); */
+	val = x + y;
+	return (val);
 }
 
 /* void	c3_check_map_closed(t_c3_state *stat, int x, int y) */

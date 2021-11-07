@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 MLX = $(MLX_DIR)/libmlx.a
 FT = $(LIBFT_DIR)/libft.a
 
-SRCS = cub3d.c scene.c map.c utils.c player.c render2.c			\
+SRCS = fdf.c scene.c map.c utils.c player.c render2.c			\
 	scene_parser_map.c scene_parser_storage.c hooks.c hooks2.c	\
 	loophook.c render.c
 
@@ -25,11 +25,11 @@ OBJS = $(SRCS:%.c=%.o)
 
 NAME = fdf
 
-CFLAGS = -I $(MLX_DIR) -I $(LIBFT_DIR) -Wall -Wextra #-Werror
-LDFLAGS = -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd -L $(LIBFT_DIR) -lft
+# CFLAGS = -I $(MLX_DIR) -I $(LIBFT_DIR) -Wall -Wextra -Werror
+# LDFLAGS = -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd -L $(LIBFT_DIR) -lft
 
-# CFLAGS = -g -fsanitize=address -I $(MLX_DIR) -I $(LIBFT_DIR) -Wall -Wextra -Werror
-# LDFLAGS = -fsanitize=address -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd -L $(LIBFT_DIR) -lft
+CFLAGS = -g -fsanitize=address -I $(MLX_DIR) -I $(LIBFT_DIR) -Wall -Wextra #-Werror
+LDFLAGS = -fsanitize=address -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd -L $(LIBFT_DIR) -lft
 
 all: $(NAME)
 
