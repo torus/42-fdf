@@ -1,0 +1,15 @@
+fdf
+*.xcf
+test/test
+test/bmptest
+test/*.bmp
+*.bmp
+*.png
+*.dot
+Makefile.gen
+*.a
+minilibx-linux/test/mlx-test
+TAGS
+materials/
+.vscode/
+*.o
