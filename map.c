@@ -39,10 +39,9 @@ void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 	/* } */
 }
 
+#include <math.h>
 int		c3_query_map(t_c3_state *stat, int x, int y)
 {
-	int val;
-
 	/* ch = stat->map.map[y * stat->map.width + x]; */
 	/* if (ch == '1') */
 	/* 	return (1); */
@@ -51,8 +50,16 @@ int		c3_query_map(t_c3_state *stat, int x, int y)
 	/* else if (ch == '2') */
 	/* 	return (2); */
 	/* return (0); */
-	val = x + y;
-	return (val);
+
+	int	dx;
+	int	dy;
+	int	height;
+
+	dx = x - ((t_c3_scene*)stat->scene)->map_width / 2;
+	dy = y - ((t_c3_scene*)stat->scene)->map_height / 2;
+	height = 10 * sin((dx * dx + dy * dy) / 30.) + 10;
+
+	return (height);
 }
 
 /* void	c3_check_map_closed(t_c3_state *stat, int x, int y) */

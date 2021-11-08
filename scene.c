@@ -54,8 +54,8 @@ void				c3_scene_init(t_c3_scene *scene)
 {
 	int	i;
 
-	scene->map_width = 100;
-	scene->map_height = 100;
+	scene->map_width = 30;
+	scene->map_height = 30;
 	scene->resolution.x = 1280;
 	scene->resolution.y = 720;
 	i = 0;

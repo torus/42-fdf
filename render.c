@@ -12,6 +12,7 @@
 
 #include <math.h>
 #include <mlx.h>
+#include "libft/libft.h"
 #include "cub3d.h"
 #include "cub3d_int.h"
 
@@ -66,6 +67,11 @@ void			c3_render_scene(t_c3_state *stat)
 	double	try;
 	double	angle;
 
+	int	size =
+		stat->screen_height *
+		stat->imgdata.size_line;
+	ft_bzero(stat->imgdata.data, size);
+
 	angle = stat->player.direction;
 	ox = (1 + cos(angle)) * 0.5 * stat->renderer.resolution_x;
 	oy = (1 + sin(angle)) * 0.5 * stat->renderer.resolution_y;
@@ -81,17 +87,13 @@ void			c3_render_scene(t_c3_state *stat)
 		while (y < ((t_c3_scene*)stat->scene)->map_height)
 		{
 			int	height;
-			int	dx;
-			int	dy;
 
-			dx = x - ((t_c3_scene*)stat->scene)->map_width / 2;
-			dy = y - ((t_c3_scene*)stat->scene)->map_height / 2;
-			col = c3_query_map(stat, x, y) + 0x00ff0000;
-			height = 10 * sin((dx * dx + dy * dy) / 100.);
+			height = c3_query_map(stat, x, y);
+			col = height * 10 + 0x00ff0000;
 			c3_render_fill_pixel(
 				stat,
-				(int)(ox + (x / 100.) * (trx - ox) + (y / 100.) * (blx - ox)),
-				(int)(oy + (x / 100.) * (try - oy) + (y / 100.) * (bly - oy)) + height,
+				(int)(ox + (x / 30.) * (trx - ox) + (y / 30.) * (blx - ox)),
+				(int)(oy + (x / 30.) * (try - oy) + (y / 30.) * (bly - oy)) + height,
 				col);
 			y++;
 		}
