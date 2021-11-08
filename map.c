@@ -18,13 +18,44 @@
 
 void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 {
-	int		i;
-	char	ch;
+	/* int		i; */
+	/* char	ch; */
 
-	map->map = scene->map;
+	/* map->map = scene->map; */
 	map->width = scene->map_width;
 	map->height = scene->map_height;
+	printf("init width height: %d %d\n", map->width, map->height);
+	map->map = malloc(sizeof(int) * map->width * map->height);
+	if (!map->map)
+	{
+		c3_scene_cleanup(scene);
+		exit(1);
+	}
+	ft_bzero(map->map, sizeof(int) * map->width * map->height);
+	/* i = 0; */
+
+	t_c3_map_rows	*row;
+	t_c3_map_cells	*cell;
+	int				i;
+	int				j;
+
 	i = 0;
+	row = scene->map_rows;
+	while(row)
+	{
+		j = 0;
+		cell = row->cells;
+		while(cell)
+		{
+			/* map->map[i * map->width + j] = cell->value; */
+			map->map[(map->height - i - 1) * map->width + map->width - j - 1] = cell->value;
+			/* printf("init %d %d %d\n", j, i, cell->value); */
+			cell = cell->next;
+			j++;
+		}
+		row = row->next;
+		i++;
+	}
 	/* while (i < map->width * map->height) */
 	/* { */
 	/* 	ch = map->map[i]; */
@@ -55,9 +86,13 @@ int		c3_query_map(t_c3_state *stat, int x, int y)
 	int	dy;
 	int	height;
 
-	dx = x - ((t_c3_scene*)stat->scene)->map_width / 2;
-	dy = y - ((t_c3_scene*)stat->scene)->map_height / 2;
-	height = 10 * sin((dx * dx + dy * dy) / 30.) + 10;
+	/* printf("query: %d, %d\n", x, y); */
+
+	/* dx = x - ((t_c3_scene*)stat->scene)->map_width / 2; */
+	/* dy = y - ((t_c3_scene*)stat->scene)->map_height / 2; */
+	/* height = 10 * sin((dx * dx + dy * dy) / 30.) + 10; */
+
+	height = stat->map.map[y * stat->map.width + x];
 
 	return (height);
 }

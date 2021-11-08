@@ -53,8 +53,8 @@ void			c3_render_fill_pixel(
 
 void			c3_render_scene(t_c3_state *stat)
 {
-	int				x;
-	int				y;
+	double			x;
+	double			y;
 	t_c3_ray		*ray;
 	unsigned int	col;
 	int				wall_height;
@@ -72,7 +72,7 @@ void			c3_render_scene(t_c3_state *stat)
 		stat->imgdata.size_line;
 	ft_bzero(stat->imgdata.data, size);
 
-	angle = stat->player.direction;
+	angle = stat->player.direction + M_PI / 2;
 	ox = (1 + cos(angle)) * 0.5 * stat->renderer.resolution_x;
 	oy = (1 + sin(angle)) * 0.5 * stat->renderer.resolution_y;
 	blx = (1 + cos(angle + M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
@@ -81,10 +81,10 @@ void			c3_render_scene(t_c3_state *stat)
 	try = (1 + sin(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
 
 	x = 0;
-	while (x < ((t_c3_scene*)stat->scene)->map_width)
+	while (x < stat->map.width)
 	{
 		y = 0;
-		while (y < ((t_c3_scene*)stat->scene)->map_height)
+		while (y < stat->map.height)
 		{
 			int	height;
 
@@ -92,8 +92,8 @@ void			c3_render_scene(t_c3_state *stat)
 			col = height * 10 + 0x00ff0000;
 			c3_render_fill_pixel(
 				stat,
-				(int)(ox + (x / 30.) * (trx - ox) + (y / 30.) * (blx - ox)),
-				(int)(oy + (x / 30.) * (try - oy) + (y / 30.) * (bly - oy)) + height,
+				(int)(ox + (x / stat->map.width) * (trx - ox) + (y / stat->map.height) * (blx - ox)),
+				stat->renderer.resolution_y - (int)(oy + (x / stat->map.width) * (try - oy) + (y / stat->map.height) * (bly - oy)) + height,
 				col);
 			y++;
 		}

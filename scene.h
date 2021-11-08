@@ -65,6 +65,18 @@ typedef struct		s_c3_scene_parser
 	int						is_specified[C3_SCENE_TOKEN_NUM];
 }					t_c3_scene_parser;
 
+typedef struct		s_c3_map_cells
+{
+	int						value;
+	struct s_c3_map_cells	*next;
+}					t_c3_map_cells;
+
+typedef struct		s_c3_map_rows
+{
+	t_c3_map_cells			*cells;
+	struct s_c3_map_rows	*next;
+}					t_c3_map_rows;
+
 typedef struct		s_c3_scene
 {
 	t_c3_vector		resolution;
@@ -73,14 +85,8 @@ typedef struct		s_c3_scene
 	unsigned int	color_ceiling;
 	int				map_width;
 	int				map_height;
-	char			*map;
+	t_c3_map_rows	*map_rows;
 }					t_c3_scene;
-
-typedef struct		s_c3_map_rows
-{
-	char					*row;
-	struct s_c3_map_rows	*next;
-}					t_c3_map_rows;
 
 int					c3_scene_parser_init_with_file(
 	t_c3_scene_parser *buf, const char *path);

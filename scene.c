@@ -54,14 +54,14 @@ void				c3_scene_init(t_c3_scene *scene)
 {
 	int	i;
 
-	scene->map_width = 30;
-	scene->map_height = 30;
+	scene->map_width = 0;
+	scene->map_height = 0;
 	scene->resolution.x = 1280;
 	scene->resolution.y = 720;
 	i = 0;
 	while (i < C3_OBJTYPE_NUM)
 		scene->tex_path[i++] = NULL;
-	scene->map = NULL;
+	scene->map_rows = NULL;
 }
 
 void				c3_scene_cleanup(t_c3_scene *scene)
@@ -75,7 +75,7 @@ void				c3_scene_cleanup(t_c3_scene *scene)
 		scene->tex_path[i] = NULL;
 		i++;
 	}
-	free(scene->map);
+	free(scene->map_rows);
 }
 
 int					c3_scene_parser_init_with_file(

@@ -16,9 +16,9 @@ LIBFT_DIR = ./libft
 MLX = $(MLX_DIR)/libmlx.a
 FT = $(LIBFT_DIR)/libft.a
 
-SRCS = fdf.c scene.c map.c utils.c player.c render2.c			\
-	scene_parser_map.c scene_parser_storage.c hooks.c hooks2.c	\
-	loophook.c render.c
+SRCS = fdf.c map.c utils.c player.c render2.c scene_parser_token.c	\
+	scene.c scene_parser_map.c scene_parser_storage.c hooks.c		\
+	hooks2.c loophook.c render.c
 
 HEADERS = cub3d_int.h cub3d.h scene.h scene_int.h
 OBJS = $(SRCS:%.c=%.o)
