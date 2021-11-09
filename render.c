@@ -67,22 +67,51 @@ static void		c3_screen_coord(
 	tr.x = (1 + cos(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
 	tr.y = (1 + sin(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
 
-	result->x = tl.x + (x / stat->map.width) * (tr.x - tl.x)
-		+ (y / stat->map.height) * (bl.x - tl.x);
-	result->y = stat->renderer.resolution_y
+	result->x = floor(tl.x + (x / stat->map.width) * (tr.x - tl.x)
+		+ (y / stat->map.height) * (bl.x - tl.x));
+	result->y = floor(stat->renderer.resolution_y
 		- tl.y
 		- (x / stat->map.width) * (tr.y - tl.y)
 		- (y / stat->map.height) * (bl.y - tl.y)
-		- z;
+		- z);
 
 	return ;
+}
+
+void			c3_draw_line(
+	t_c3_state *stat, t_c3_vector *from, t_c3_vector *to,
+	unsigned int col1, unsigned int col2)
+{
+	int	steps;
+	int	dx;
+	int	dy;
+
+	dx = abs((int)(to->x - from->x));
+	dy = abs((int)(to->y - from->y));
+	if (dx > dy)
+		steps = dx;
+	else
+		steps = dy;
+
+	int				i;
+	t_c3_vector		pos;
+	unsigned int	col;
+
+	i = 0;
+	while (i < steps)
+	{
+		col = (col1 * i + col2 * (steps - i)) / steps;
+		pos.x = (from->x * i + to->x * (steps - i)) / steps;
+		pos.y = (from->y * i + to->y * (steps - i)) / steps;
+		c3_render_fill_pixel(stat, pos.x, pos.y, col);
+		i++;
+	}
 }
 
 void			c3_render_scene(t_c3_state *stat)
 {
 	double			x;
 	double			y;
-	unsigned int	col;
 
 	ft_bzero(stat->imgdata.data,
 			stat->screen_height * stat->imgdata.size_line);
@@ -95,11 +124,31 @@ void			c3_render_scene(t_c3_state *stat)
 		{
 			int	height;
 			t_c3_vector	coord;
+			t_c3_vector	prev_coord;
+			unsigned int	col1;
+			unsigned int	col2;
 
 			height = c3_query_map(stat, x, y);
-			col = height * 20 + 0x00ff0000;
+			col1 = height * 20 + 0x00ff0000;
 			c3_screen_coord(stat, &coord, x, y, height);
-			c3_render_fill_pixel(stat, coord.x, coord.y, col);
+			if (x > 0)
+			{
+				height = c3_query_map(stat, x - 1, y);
+				col2 = height * 20 + 0x00ff0000;
+				c3_screen_coord(stat, &prev_coord, x - 1, y, height);
+				c3_draw_line(stat, &prev_coord, &coord, col2, col1);
+			}
+			if (y > 0)
+			{
+				height = c3_query_map(stat, x, y - 1);
+				col2 = height * 20 + 0x00ff0000;
+				c3_screen_coord(stat, &prev_coord, x, y - 1, height);
+				c3_draw_line(stat, &prev_coord, &coord, col2, col1);
+			}
+			if (x == 0 && y == 0)
+			{
+				c3_render_fill_pixel(stat, coord.x, coord.y, col1);
+			}
 			y++;
 		}
 		x++;

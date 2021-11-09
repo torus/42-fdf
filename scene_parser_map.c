@@ -53,10 +53,10 @@ t_c3_parse_result	c3_scene_parse_map(
 		}
 		if (scene->map_width < width)
 			scene->map_width = width;
-		height++;
 		printf("\n");
 		if (tok == C3_SCENE_TOKEN_EOF)
 			break ;
+		height++;
 		if (tok != C3_SCENE_TOKEN_NEWLINE)
 			return (C3_PARSE_FAIL);
 		t_c3_map_rows	*new_row;
