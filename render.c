@@ -51,34 +51,41 @@ void			c3_render_fill_pixel(
 	}
 }
 
+static void		c3_screen_coord(
+	t_c3_state *stat, t_c3_vector *result, double x, double y, double z)
+{
+	t_c3_vector	tl;
+	t_c3_vector	bl;
+	t_c3_vector	tr;
+	double	angle;
+
+	angle = M_PI / 2 - stat->player.direction;
+	tl.x = (1 + cos(angle)) * 0.5 * stat->renderer.resolution_x;
+	tl.y = (1 + sin(angle)) * 0.5 * stat->renderer.resolution_y;
+	bl.x = (1 + cos(angle + M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
+	bl.y = (1 + sin(angle + M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
+	tr.x = (1 + cos(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
+	tr.y = (1 + sin(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
+
+	result->x = tl.x + (x / stat->map.width) * (tr.x - tl.x)
+		+ (y / stat->map.height) * (bl.x - tl.x);
+	result->y = stat->renderer.resolution_y
+		- tl.y
+		- (x / stat->map.width) * (tr.y - tl.y)
+		- (y / stat->map.height) * (bl.y - tl.y)
+		- z;
+
+	return ;
+}
+
 void			c3_render_scene(t_c3_state *stat)
 {
 	double			x;
 	double			y;
-	t_c3_ray		*ray;
 	unsigned int	col;
-	int				wall_height;
 
-	double	ox;
-	double	oy;
-	double	blx;
-	double	bly;
-	double	trx;
-	double	try;
-	double	angle;
-
-	int	size =
-		stat->screen_height *
-		stat->imgdata.size_line;
-	ft_bzero(stat->imgdata.data, size);
-
-	angle = stat->player.direction + M_PI / 2;
-	ox = (1 + cos(angle)) * 0.5 * stat->renderer.resolution_x;
-	oy = (1 + sin(angle)) * 0.5 * stat->renderer.resolution_y;
-	blx = (1 + cos(angle + M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
-	bly = (1 + sin(angle + M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
-	trx = (1 + cos(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_x;
-	try = (1 + sin(angle - M_PI / 2.)) * 0.5 * stat->renderer.resolution_y;
+	ft_bzero(stat->imgdata.data,
+			stat->screen_height * stat->imgdata.size_line);
 
 	x = 0;
 	while (x < stat->map.width)
@@ -87,14 +94,12 @@ void			c3_render_scene(t_c3_state *stat)
 		while (y < stat->map.height)
 		{
 			int	height;
+			t_c3_vector	coord;
 
 			height = c3_query_map(stat, x, y);
-			col = height * 10 + 0x00ff0000;
-			c3_render_fill_pixel(
-				stat,
-				(int)(ox + (x / stat->map.width) * (trx - ox) + (y / stat->map.height) * (blx - ox)),
-				stat->renderer.resolution_y - (int)(oy + (x / stat->map.width) * (try - oy) + (y / stat->map.height) * (bly - oy)) + height,
-				col);
+			col = height * 20 + 0x00ff0000;
+			c3_screen_coord(stat, &coord, x, y, height);
+			c3_render_fill_pixel(stat, coord.x, coord.y, col);
 			y++;
 		}
 		x++;
