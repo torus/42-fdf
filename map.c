@@ -12,12 +12,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "cub3d.h"
 #include "cub3d_int.h"
 #include "scene.h"
 
 void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 {
+	t_c3_map_rows	*row;
+	t_c3_map_cells	*cell;
+	int				i;
+	int				j;
+
 	map->width = scene->map_width;
 	map->height = scene->map_height;
 	printf("init width height: %d %d\n", map->width, map->height);
@@ -28,12 +34,6 @@ void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 		exit(1);
 	}
 	ft_bzero(map->map, sizeof(int) * map->width * map->height);
-
-	t_c3_map_rows	*row;
-	t_c3_map_cells	*cell;
-	int				i;
-	int				j;
-
 	i = 0;
 	row = scene->map_rows;
 	while(row)
@@ -42,7 +42,8 @@ void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 		cell = row->cells;
 		while(cell)
 		{
-			map->map[(map->height - i - 1) * map->width + map->width - j - 1] = cell->value;
+			map->map[(map->height - i - 1) * map->width + map->width - j - 1]
+				= cell->value;
 			cell = cell->next;
 			j++;
 		}
@@ -51,7 +52,6 @@ void	c3_map_init(t_c3_map *map, t_c3_scene *scene)
 	}
 }
 
-#include <math.h>
 int		c3_query_map(t_c3_state *stat, int x, int y)
 {
 	int	dx;

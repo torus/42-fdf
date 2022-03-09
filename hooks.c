@@ -15,15 +15,11 @@
 #include "cub3d.h"
 #include "cub3d_int.h"
 
-#define XK_MISCELLANY
-#define XK_LATIN1
-#include <X11/keysymdef.h>
-
-int		c3_key_press_hook(int key, void *param)
+int	c3_key_press_hook(int key, void *param)
 {
 	t_c3_state	*stat;
 
-	stat = (t_c3_state*)param;
+	stat = (t_c3_state *)param;
 	if (key == XK_W || key == XK_w)
 		stat->keystate.w = 1;
 	else if (key == XK_A || key == XK_a)
@@ -39,11 +35,11 @@ int		c3_key_press_hook(int key, void *param)
 	return (1);
 }
 
-int		c3_key_release_hook(int key, void *param)
+int	c3_key_release_hook(int key, void *param)
 {
 	t_c3_state	*stat;
 
-	stat = (t_c3_state*)param;
+	stat = (t_c3_state *)param;
 	if (key == XK_Escape)
 	{
 		c3_terminate(stat);
@@ -66,33 +62,33 @@ int		c3_key_release_hook(int key, void *param)
 	return (1);
 }
 
-int		c3_focusin_hook(void *param)
+int	c3_focusin_hook(void *param)
 {
 	int			tmp;
 	t_c3_state	*stat;
 
-	stat = (t_c3_state*)param;
+	stat = (t_c3_state *)param;
 	tmp = mlx_do_key_autorepeatoff(stat->mlx);
 	c3_check(!!tmp, "mlx_do_key_autorepeatoff() returned false.");
 	return (1);
 }
 
-int		c3_focusout_hook(void *param)
+int	c3_focusout_hook(void *param)
 {
 	int			tmp;
 	t_c3_state	*stat;
 
-	stat = (t_c3_state*)param;
+	stat = (t_c3_state *)param;
 	tmp = mlx_do_key_autorepeaton(stat->mlx);
 	c3_check(!!tmp, "mlx_do_key_autorepeatoff() returned false.");
 	return (1);
 }
 
-int		c3_client_hook(void *param)
+int	c3_client_hook(void *param)
 {
 	t_c3_state	*stat;
 
-	stat = (t_c3_state*)param;
+	stat = (t_c3_state *)param;
 	c3_terminate(stat);
 	exit(0);
 }

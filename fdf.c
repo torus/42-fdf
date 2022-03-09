@@ -49,7 +49,7 @@ void	c3_texture_cache_init(t_c3_texture_cache *cache, t_c3_scene *scene)
 	}
 }
 
-void	c3_init(t_c3_state *stat, t_c3_texture_cache *tex, t_c3_scene *scene)
+void	c3_init(t_c3_state *stat, t_c3_scene *scene)
 {
 	stat->mlx = NULL;
 	stat->window = NULL;
@@ -60,25 +60,21 @@ void	c3_init(t_c3_state *stat, t_c3_texture_cache *tex, t_c3_scene *scene)
 	c3_map_init(&stat->map, scene);
 	c3_keystate_init(&stat->keystate);
 	c3_player_init(stat, &stat->player, &stat->map);
-	/* c3_check_map_closed(stat, stat->player.position.x, stat->player.position.y); */
 	stat->mlx = mlx_init();
 	c3_check(!!stat->mlx, "mlx is NULL.");
 	c3_init_set_screen_size(stat, scene);
 	c3_renderer_init(
-		&stat->renderer, scene, stat->map.width * 8, stat->map.height * 8);
+		&stat->renderer, scene, stat->map.width * 8,
+		stat->map.height * 8);
 	c3_init_render_target(stat);
-	/* c3_texture_cache_init(tex, scene); */
-	/* stat->texture_cache = tex; */
-	/* c3_texture_preload_all(stat); */
 	stat->is_drawing_minimap = 0;
 	stat->is_benchmarking = 0;
 	stat->is_showing_screen = 1;
 }
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_c3_state			stat;
-	t_c3_texture_cache	tex;
 	t_c3_scene			scene;
 
 	if (argc < 2 || argc > 3
@@ -92,14 +88,7 @@ int		main(int argc, char **argv)
 		c3_scene_cleanup(&scene);
 		return (1);
 	}
-	c3_init(&stat, &tex, &scene);
-	/* if (argc == 3) */
-	/* { */
-	/* 	stat.is_showing_screen = 0; */
-	/* 	c3_bmp_generate(&stat); */
-	/* 	c3_terminate(&stat); */
-	/* } */
-	/* else */
-		c3_start_rendering_loop(&stat);
+	c3_init(&stat, &scene);
+	c3_start_rendering_loop(&stat);
 	return (0);
 }
